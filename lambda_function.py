@@ -10,6 +10,7 @@ import urllib.parse
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+
 def lambda_handler(event, context):
     webhook_url = os.environ.get('WEBHOOK_URL')
 
@@ -24,9 +25,9 @@ def lambda_handler(event, context):
 
     body = {
         "link_names": 1,
-        'username': "AWS IoT",
+        'username': event["placementInfo"]["attributes"].get("username", "AWS IoT"),
         'text': text,
-        'icon_emoji': ":aws:"
+        'icon_emoji': event["placementInfo"]["attributes"].get("icon_emoji", ":aws:")
     }
 
     encoded_post_data = urllib.parse.urlencode({"payload": body}).encode(encoding='ascii')
